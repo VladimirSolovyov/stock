@@ -41,48 +41,40 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
 ?>
 
 <?php 
-/*
- $sum_amount =  $list_stock['amount'] + $amount;
-        $query ="UPDATE stock SET 'amount'=".$sum_amount." WHERE 'code'=".$code;
-        mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 
-
-        
-    $query = "INSERT INTO stock VALUES(NULL, '$name','$amount','$code')";
-    mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
-*/
-
-if(empty($code)){
+if(!empty($code)){
 $host = "localhost";
 $user = "a0144913_stock";
 $password = "stock";
 $db_name = "a0144913_stock";
 $table = "stock";
 
-    $conn = mysql_connect($host,$user,$password);
+$conn = mysql_connect($host,$user,$password);
+mysql_select_db($db_name, $conn);
 
-    mysql_select_db($db_name, $conn);
+$mysqli = new mysqli("localhost", $user, $password, $db_name);
 
- $qr_result = mysql_query("SELECT name,amount,code FROM ".$table);
-  echo '<table border="1">';
-  echo '<thead>';
-  echo '<tr>';
-  echo '<th>Название</th>';
-  echo '<th>Количество</th>';
-  echo '<th>Код товара</th>';
-  echo '</tr>';
-  echo '</thead>';
-  echo '<tbody>';
- while($data = mysql_fetch_array($qr_result)){ 
-    echo '<tr>';
-    echo '<td>' . $data['name'] . '</td>';
-    echo '<td>' . $data['amount'] . '</td>';
-    echo '<td>' . $data['code'] . '</td>';
-    echo '</tr>';
-  }
+/* проверка соединения */
+if ($mysqli->connect_errno) {
+    printf("Не удалось подключиться: %s\n", $mysqli->connect_error);
+    exit();
+}
 
-  echo '</tbody>';
-  echo '</table>';
+/* Select запросы возвращают результирующий набор */
+if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code)) {
+    if($result->num_rows > 0){
+       $sum_amount =  (int)$result->fetch_assoc()["amount"] + (int)$amount;
+       echo $sum_amount;
+            $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code);
+        } else {
+            $mysqli->query("INSERT INTO stock VALUES(NULL, '$name','$amount','$code')");
+    }
+    /* очищаем результирующий набор */
+    $result->close();
+}
+
+$mysqli->close();
+
 }
 ?>
 <h2>Добавить товар</h2>
