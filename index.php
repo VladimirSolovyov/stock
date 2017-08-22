@@ -50,7 +50,7 @@ $table = "coming";
       <div class="span12">
 <?php
  $qr_result = mysql_query("SELECT name,amount,code,date FROM ".$table);
-  echo '<table class="table">';
+  echo '<table class="table table-hover">';
   echo '<thead>';
   echo '<tr>';
   echo '<th>Название</th>';

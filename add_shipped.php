@@ -77,7 +77,7 @@ $mysqli->close();
 }
 ?>
 <div class="container">
-        <h3>Отгрузить товар</h3>
+<h3>Отгрузить товар</h3>
 <ul class="nav nav-pills">
 <li>
 <a href="stock.php">Склад</a>
@@ -97,13 +97,24 @@ $mysqli->close();
 </ul>
 
 <form method="POST">
-<p>Наименование:<br> 
-<input type="text" name="name" /></p>
-<p>Количество: <br> 
-<input type="text" name="amount" /></p>
-<p>Код: <br> 
-<input type="text" name="code" /></p>
-<input type="submit" value="Добавить">
+    <legend>Отгрузить товар</legend>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Наименование:</label></div>
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="name" /></div>
+</div>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div> 
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" /></div>
+</div>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Код: </label></div> 
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="code" /></div>
+</div>
+<div class="row">
+    <div class="col-sm-4" style="padding: 10px;">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
+</div>
 </form>
 </div>
 </body>
