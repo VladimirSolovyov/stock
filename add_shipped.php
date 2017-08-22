@@ -39,6 +39,41 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
     mysqli_close($link);
 }
 ?>
+
+<?php 
+
+if(!empty($code)){
+$host = "localhost";
+$user = "a0144913_stock";
+$password = "stock";
+$db_name = "a0144913_stock";
+$table = "stock";
+
+$conn = mysql_connect($host,$user,$password);
+mysql_select_db($db_name, $conn);
+
+$mysqli = new mysqli("localhost", $user, $password, $db_name);
+
+/* проверка соединения */
+if ($mysqli->connect_errno) {
+    printf("Не удалось подключиться: %s\n", $mysqli->connect_error);
+    exit();
+}
+
+/* Select запросы возвращают результирующий набор */
+if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code)) {
+    if($result->num_rows > 0){
+       $sum_amount =  (int)$result->fetch_assoc()["amount"] - (int)$amount;
+            $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code);
+        } 
+    /* очищаем результирующий набор */
+    $result->close();
+}
+
+$mysqli->close();
+
+}
+?>
 <h2>Отгрузить товар</h2>
 <form method="POST">
 <p>Наименование:<br> 

@@ -64,7 +64,6 @@ if ($mysqli->connect_errno) {
 if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code)) {
     if($result->num_rows > 0){
        $sum_amount =  (int)$result->fetch_assoc()["amount"] + (int)$amount;
-       echo $sum_amount;
             $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code);
         } else {
             $mysqli->query("INSERT INTO stock VALUES(NULL, '$name','$amount','$code')");
