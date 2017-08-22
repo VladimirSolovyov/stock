@@ -15,21 +15,38 @@ $table = "shipped";
     //     echo "Bad";        
     // }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+      <div class="span12">
 <h3>Отгрузка</h3>
-<ul>
+<ul class="nav nav-pills">
 <li>
 <a href="stock.php">Склад</a>
 </li>
 <li>
 <a href="index.php">Приход</a>
 </li>
-<li>
+<li class="active">
 <a href="shipped.php">Отгрузка</a>
+</li>
+<li>
+<a href="add_coming.php">Оформить приход</a>
+</li>
+<li>
+<a href="add_shipped.php">Оформить отгрузку</a>
 </li>
 </ul>
 <?php
  $qr_result = mysql_query("SELECT name,amount,code,date FROM ".$table);
-  echo '<table border="1">';
+  echo '<table class="table">';
   echo '<thead>';
   echo '<tr>';
   echo '<th>Название</th>';
@@ -52,3 +69,7 @@ $table = "shipped";
   echo '</table>';
 
 ?>
+</div>
+</div>
+</div>
+</body>

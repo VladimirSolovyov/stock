@@ -7,9 +7,11 @@ $table = "shipped";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <?php
@@ -74,7 +76,26 @@ $mysqli->close();
 
 }
 ?>
-<h2>Отгрузить товар</h2>
+<div class="container">
+        <h3>Отгрузить товар</h3>
+<ul class="nav nav-pills">
+<li>
+<a href="stock.php">Склад</a>
+</li>
+<li>
+<a href="index.php">Приход</a>
+</li>
+<li>
+<a href="shipped.php">Отгрузка</a>
+</li>
+<li>
+<a href="add_coming.php">Оформить приход</a>
+</li>
+<li  class="active">
+<a href="add_shipped.php">Оформить отгрузку</a>
+</li>
+</ul>
+
 <form method="POST">
 <p>Наименование:<br> 
 <input type="text" name="name" /></p>
@@ -84,5 +105,6 @@ $mysqli->close();
 <input type="text" name="code" /></p>
 <input type="submit" value="Добавить">
 </form>
+</div>
 </body>
 </html>

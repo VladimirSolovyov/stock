@@ -7,11 +7,32 @@ $table = "coming";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div class="container"> 
+    <h3>Добавить товар</h3>   
+    <ul class="nav nav-pills">
+<li>
+<a href="stock.php">Склад</a>
+</li>
+<li>
+<a href="index.php">Приход</a>
+</li>
+<li>
+<a href="shipped.php">Отгрузка</a>
+</li>
+<li  class="active">
+<a href="add_coming.php">Оформить приход</a>
+</li>
+<li>
+<a href="add_shipped.php">Оформить отгрузку</a>
+</li>
+</ul>
 <?php
  
 if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
@@ -33,7 +54,7 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
     $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
     if($result)
     {
-        echo "<span style='color:blue;'>Данные добавлены</span></br><a href='index.php'>Посмотреть документы прихода</a>";
+        echo "<span class='text-success'>Данные добавлены</span></br><a href='index.php'>Посмотреть документы прихода</a>";
     }
     // закрываем подключение
     mysqli_close($link);
@@ -76,15 +97,28 @@ $mysqli->close();
 
 }
 ?>
-<h2>Добавить товар</h2>
+<div class="container">
 <form method="POST">
-<p>Наименование:<br> 
-<input type="text" name="name" /></p>
-<p>Количество: <br> 
-<input type="text" name="amount" /></p>
-<p>Код: <br> 
-<input type="text" name="code" /></p>
-<input type="submit" value="Добавить">
+<legend>Добавить товар</legend>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Наименование:</label></div>
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="name" /></div>
+</div>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div> 
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" /></div>
+</div>
+<div class="row">
+<div class="col-sm-2" style="padding:5px;"><label>Код: </label></div> 
+<div class="col-sm-4" style="padding:5px;"><input type="text" name="code" /></div>
+</div>
+<div class="row">
+    <div class="col-sm-4" style="padding: 10px;">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
+</div>
 </form>
+</div>
+</div>
 </body>
 </html>
