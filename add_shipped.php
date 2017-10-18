@@ -13,6 +13,27 @@ $table = "shipped";
         <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="node_modules/jquery/dist/jquery.min.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script>
+        $(function(){
+            $(".addComing").on('click',function(){
+                let valueCode = $(".codeRequired").val();
+
+                //Проверка введённого кода. 
+                valueCode = parseInt(valueCode);
+                if(isNaN(parseInt(valueCode)) || valueCode === 0) {
+                    alert("Введите корректный штрих-код товара!");
+                    $(".codeRequired").addClass("error");
+                    return false;
+                }
+            })
+        });
+
+        </script>
+        <style>
+        .error {
+            border: 2px solid #b94a48;
+        }
+        </style>
     </head>
 
     <body>
@@ -110,11 +131,14 @@ $mysqli->close();
                     </div>
                     <div class="row">
                         <div class="col-sm-2" style="padding:5px;"><label>Код: </label></div>
-                        <div class="col-sm-4" style="padding:5px;"><input type="text" name="code" /></div>
+                        <div class="col-sm-4" style="padding:5px;"><input class="codeRequired" type="text" name="code" /></div>
+                        <div class=col-sm-2>
+                            <button class="btn btn-warning checkCode" style="display:none;">Проверить код</button>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4" style="padding: 10px;">
-                            <button type="submit" class="btn btn-primary">Добавить</button>
+                            <button type="submit" class="btn btn-primary addComing">Добавить</button>
                         </div>
                     </div>
                 </form>
