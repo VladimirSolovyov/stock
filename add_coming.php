@@ -28,6 +28,34 @@ $table = "coming";
             })
         });
 
+        /*
+        Цели Create:
+        1. Проверка кода есть ли такой код в БД.
+        2. Подстановка данных(Наименования) по коду если он есть в БД.
+        */    
+        function create () {
+            var code = $('.codeRequired').val();
+
+            if(code.length == 0){
+               alert("Вы не ввели значения поля код!");
+               return false;
+            }
+
+            
+
+          $.ajax({
+            url:"test.php", 
+            type: "post",
+            dataType: 'json',
+            data: {code: parseInt(code,10)},           
+            success: function(result) {
+             console.log(result);
+            },
+            error: function(result) {
+             console.log("error");
+            }
+         });
+     }
         </script>
         <style>
         .error {
@@ -133,9 +161,9 @@ $mysqli->close();
                         </div>
                         <div class="row">
                             <div class="col-sm-2" style="padding:5px;"><label>Код: </label></div>
-                            <div class="col-sm-4" style="padding:5px;"><input class="codeRequired" type="text" name="code" /></div>
+                            <div class="col-sm-2" style="padding:5px;"><input class="codeRequired" type="text" name="code" /></div>
                             <div class=col-sm-2>
-                                <button class="btn btn-warning checkCode" style="display:none;">Проверить код</button>
+                                <button class="btn btn-warning checkCode" style="display:none;" onclick="create()">Проверить код</button>
                             </div>
                         </div>
                         <div class="row">
@@ -144,6 +172,9 @@ $mysqli->close();
                             </div>
                         </div>
                     </form>
+
+
+                    <button class="btn btn-warning checkCode" style="width: 10px; height: 10px; background: white; border: 2px solid;" onclick="create()"></button>
                 </div>
         </div>
     </body>
