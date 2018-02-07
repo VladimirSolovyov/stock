@@ -51,7 +51,7 @@ $table = "coming";
       <div class="row">
         <div class="span12">
           <?php
- $qr_result = mysql_query("SELECT name,amount,code,date FROM ".$table);
+ $qr_result = mysql_query("SELECT name,amount,code,date FROM ".$table." ORDER BY `date` DESC");
   echo '<table class="table table-hover">';
   echo '<thead>';
   echo '<tr>';

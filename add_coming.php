@@ -108,6 +108,7 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
         echo "<span class='text-success'>Данные добавлены</span></br><a href='index.php'>Посмотреть документы прихода</a>";
     }
     // закрываем подключение
+    mysqli_close($link);
 }
 ?>
 

@@ -49,10 +49,11 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
     $name = htmlentities(mysqli_real_escape_string($link, $_POST['name']));
     $amount = htmlentities(mysqli_real_escape_string($link, $_POST['amount']));
     $code = htmlentities(mysqli_real_escape_string($link, $_POST['code']));
+    $who = htmlentities(mysqli_real_escape_string($link, $_POST['who']));
     $today = date("Y-m-d H:i:s");
      
     // создание строки запроса
-    $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today')";
+    $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today','$who')";
      
     // выполняем запрос
     $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
@@ -128,6 +129,10 @@ $mysqli->close();
                     <div class="row">
                         <div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div>
                         <div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2" style="padding:5px;"><label>Кому отгружаем: </label></div>
+                        <div class="col-sm-4" style="padding:5px;"><input type="text" name="who" /></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-2" style="padding:5px;"><label>Код: </label></div>
