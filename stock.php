@@ -22,6 +22,21 @@ $table = "stock";
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+    $(function(){
+      $.each($(".amount"),function(i,el){  
+          if(+$(el).text() === 0){
+            $(el).parents('tr').addClass('empty-amount');
+          }
+      });
+    });
+    </script>
+    <style>
+    .empty-amount {
+      color: red;
+      background: #eeeeee;
+    }
+    </style>
   </head>
 
   <body>
@@ -60,7 +75,7 @@ $table = "stock";
  while($data = mysql_fetch_array($qr_result)){ 
     echo '<tr>';
     echo '<td>' . $data['name'] . '</td>';
-    echo '<td>' . $data['amount'] . '</td>';
+    echo '<td class="amount">' . $data['amount'] . '</td>';
     echo '<td>' . $data['code'] . '</td>';
     echo '</tr>';
   }

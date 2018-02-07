@@ -25,37 +25,35 @@ $table = "coming";
                     $(".codeRequired").addClass("error");
                     return false;
                 }
-            })
-        });
-
-        /*
-        Цели Create:
-        1. Проверка кода есть ли такой код в БД.
-        2. Подстановка данных(Наименования) по коду если он есть в БД.
-        */    
-        function create () {
-            var code = $('.codeRequired').val();
-
-            if(code.length == 0){
-               alert("Вы не ввели значения поля код!");
-               return false;
-            }
-
+            });
             
+            /* Цели Create:
+            1. Проверка кода есть ли такой код в БД.
+            2. Подстановка данных(Наименования) по коду если он есть в БД.*/
+            $('.codeRequired').blur(function() {
+                var code = $('.codeRequired').val();
+                if(code.length == 0){
+                    alert("Вы не ввели значения поля код!");
+                    return false;
+                }
+                
+                $.ajax({
+                    url:"test.php", 
+                    type: "post",
+                    dataType: 'json',
+                    data: {code: parseInt(code,10)},           
+                    success: function(result) {
+                        $('.name-tovar').val(result);
+                        $('.name-tovar').attr('disabled','disabled');
+                        $('.amount-tovar').focus().val('');
+                    },
+                    error: function(result) {
+                        console.log("error");
+                    }
+                });
+            });
 
-          $.ajax({
-            url:"test.php", 
-            type: "post",
-            dataType: 'json',
-            data: {code: parseInt(code,10)},           
-            success: function(result) {
-             console.log(result);
-            },
-            error: function(result) {
-             console.log("error");
-            }
-         });
-     }
+        });
         </script>
         <style>
         .error {
@@ -150,21 +148,21 @@ $mysqli->close();
 ?>
                 <div class="container">
                     <form method="POST">
-                        <legend>Добавить товар</legend>
-                        <div class="row">
-                            <div class="col-sm-2" style="padding:5px;"><label>Наименование:</label></div>
-                            <div class="col-sm-4" style="padding:5px;"><input type="text" name="name" /></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div>
-                            <div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" value="0"/></div>
-                        </div>
+                        <p><span style="color:red;">Внимание!</span> Если вы знаете <b>код товара</b> в первую очередь вводите его, <b>наименование</b> подставляется автоматически.</p>
                         <div class="row">
                             <div class="col-sm-2" style="padding:5px;"><label>Код: </label></div>
                             <div class="col-sm-2" style="padding:5px;"><input class="codeRequired" type="text" name="code" /></div>
                             <div class=col-sm-2>
                                 <button class="btn btn-warning checkCode" style="display:none;" onclick="create()">Проверить код</button>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2" style="padding:5px;"><label>Наименование:</label></div>
+                            <div class="col-sm-4" style="padding:5px;"><input type="text" name="name" class="name-tovar"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div>
+                            <div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" value="0" class="amount-tovar"/></div>
                         </div>
                         <div class="row">
                             <div class="col-sm-4" style="padding: 10px;">
