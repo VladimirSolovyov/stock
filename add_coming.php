@@ -88,7 +88,7 @@ $table = "coming";
  
 if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
  
-    // подключаемся к серверуa
+    // подключаемся к серверу
     $link = mysqli_connect($host, $user, $password, $db_name) 
         or die("Ошибка " . mysqli_error($link)); 
      
