@@ -44,7 +44,7 @@ $table = "coming";
                     data: {code: parseInt(code,10)},           
                     success: function(result) {
                         $('.name-tovar').val(result);
-                        $('.name-tovar').attr('disabled','disabled');
+                        //$('.name-tovar').attr('disabled','disabled'); Задизейбленый не хочет подставлять
                         $('.amount-tovar').focus().val('');
                     },
                     error: function(result) {

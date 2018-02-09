@@ -14,7 +14,8 @@ $table = "shipped";
         <script src="node_modules/jquery/dist/jquery.min.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script>
-        $(function(){
+        $(function() {
+
             $(".addComing").on('click',function(){
                 let valueCode = $(".codeRequired").val();
 
@@ -25,7 +26,7 @@ $table = "shipped";
                     $(".codeRequired").addClass("error");
                     return false;
                 }
-            })
+            });
 
             /* Цели Create:
             1. Проверка кода есть ли такой код в БД.
@@ -44,7 +45,7 @@ $table = "shipped";
                     data: {code: parseInt(code,10)},           
                     success: function(result) {
                         $('.name-tovar').val(result);
-                        $('.name-tovar').attr('disabled','disabled');
+                        //$('.name-tovar').attr('disabled','disabled'); Задизейбленый не хочет подставлять
                         $('.amount-tovar').focus().val('');
                     },
                     error: function(result) {
