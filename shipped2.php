@@ -52,7 +52,6 @@ $table = "shipped";
 
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link href="css/style.css" rel="stylesheet">
     <script>
 
     function sortWho(t){
@@ -84,16 +83,13 @@ $table = "shipped";
         $('#filter').click(function(){
           var from_date = $("#from_date").val();
           var to_date = $("#to_date").val();
-          var user_date = $("#user_date").val();
           if(from_date != '' && to_date != ''){
             $.ajax({
               url: "fetch.php",
               method: "POST",
-              data:{from_date: from_date, to_date:to_date, user_date:user_date},
+              data:{from_date: from_date, to_date:to_date},
               success:function(data){
                     $('#order_table').html(data);
-                    $('#report').show();
-                    $('#filter').hide();
               }
             });
           }
@@ -106,64 +102,8 @@ $table = "shipped";
         $('.reload-page').on('click', function(){
           location.reload();
         });
-
-        $('#report').on('click',function(){
-          report();
-          $('#report').hide();
-          $('#filter').show();
-        })
     });
 
-    function report(){
-      var $shippedLst = $('.body-table tr'),
-          arrayCode = []
-          objectReport = [];
-          commonAmount = 0;
-          commonWeight = 0;
-         // countObject = 0;
-
-      for(var i = 0; i<$shippedLst.length; i++){
-       var new_item = parseInt($shippedLst.eq(i).find('.code').text(),10);
-       if (arrayCode.indexOf(new_item) === -1) {
-         // Здесь кладём новую запись в объект
-          arrayCode.push(new_item); 
-          objectReport.push({
-            "name":$shippedLst.eq(i).find('.name').text(),
-            "code":parseInt($shippedLst.eq(i).find('.code').text(),10),
-            "amount":parseInt($shippedLst.eq(i).find('.amount').text(),10),
-            "weight":$shippedLst.eq(i).find('.weight').text()            
-            });
-
-            commonAmount += parseInt($shippedLst.eq(i).find('.amount').text(),10);
-            commonWeight += parseInt($shippedLst.eq(i).find('.weight').text(),10)*parseInt($shippedLst.eq(i).find('.amount').text(),10);
-         // countObject++;
-        } else {
-         // Здесь будем увеличивать amount
-            for(var j = 0; j<objectReport.length; j++) {
-              if(objectReport[j]["code"] === new_item) {
-                objectReport[j]["amount"] += parseInt($shippedLst.eq(i).find('.amount').text(),10);
-                commonAmount += parseInt($shippedLst.eq(i).find('.amount').text(),10);
-                commonWeight += parseInt($shippedLst.eq(i).find('.weight').text(),10)*parseInt($shippedLst.eq(i).find('.amount').text(),10);
-                break;
-              }
-            }
-        }               
-      }
-
-      console.log(objectReport);
-      console.log("Общее количество товаров: " + commonAmount);
-      console.log("Общий вес товаров: "+ commonWeight);
-      var objectCommon= { 'amountAll':commonAmount,'weightAll':commonWeight };
-
-      $.ajax({
-        type:'POST',
-        url:'report.php',
-        dataType:'json',
-        data:{param:JSON.stringify(objectReport), common:JSON.stringify(objectCommon)},
-      }).done(function(){
-          window.location.href="http://a0144913.xsph.ru/Report.xls";
-});
-    }
     </script>
 
     <style>
@@ -185,7 +125,7 @@ $table = "shipped";
     <div class="container">
     <div class="row">
     <div class="col-sm-8">
-    <h3>Отгрузка</h3>   
+    <h3>Отгрузка 2</h3>   
     </div>
     <div class="col-sm-4">
           <label for="user">Пользовватель: </label>
@@ -198,34 +138,25 @@ $table = "shipped";
           <?php include 'menu.php'; ?>
         </div>
         </div>
-        <h3>Фильтрация данных</h3>
         <div class="row">
         <div class="input-datarange">
         <div class="col-md-3">
-          <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Дата начало" />
+          <input type="text" name="from_date" id="from_date" class="form-control" />
         </div>
         <div class="col-md-3">
-          <input type="text" name="to" id="to_date" class="form-control" placeholder="Дата окончания" />
+          <input type="text" name="to" id="to_date" class="form-control" />
         </div>
-      </div>
-      <div class="col-md-3">
-            <select class="custom-select mr-sm-2 form-control" id="user_date">
-              <option value="" selected>Укажите пользователя</option>
-              <option value="Igor">Igor</option>
-              <option value="Oleg">Oleg</option>
-            </select>
-        </div>
-      <div class="col-md-3">
+        <div class="col-md-5">
           <input type="button" name="filter" id="filter" value="Фильтровать" class="btn btn-info" />
-          <input type="button" name="report" style="display:none;" id="report" value="Отчёт" class="btn btn-success" />
           <button type="button" class="btn btn-secondary reload-page">Сбросить фильтр</button>
         </div>
+      </div>
         </div>
         <div class="row">
         <div class="span12" id="order_table">
           <?php
 
- $qr_result = mysql_query("SELECT name,weight,amount,code,date,who_shipped,user FROM ".$table." ORDER BY `date` DESC");/* LIMIT 10*/
+ $qr_result = mysql_query("SELECT name,amount,code,date,who_shipped,user FROM ".$table." ORDER BY `date` DESC");/* LIMIT 10*/
   echo '<table class="table">';
 
   echo '<thead>';
@@ -233,8 +164,6 @@ $table = "shipped";
   echo '<tr>';
 
   echo '<th>Название</th>';
-
-  echo '<th>Вес(кг/л)</th>';
 
   echo '<th>Количество</th>';
 
@@ -256,15 +185,13 @@ $table = "shipped";
 
     echo '<tr>';
 
-    echo '<td class="name">' . $data['name'] . '</td>';
+    echo '<td>' . $data['name'] . '</td>';
 
-    echo '<td class="weight">' . $data['weight'] . '</td>';
-
-    echo '<td class="amount">' . $data['amount'] . '</td>';
+    echo '<td>' . $data['amount'] . '</td>';
 
     echo '<td class="td-who"><a href="#" onclick="sortWho(\''. $data['who_shipped'] .'\');">'. $data['who_shipped'] .'</a></td>';
 
-    echo '<td class="code">' . $data['code'] . '</td>';
+    echo '<td>' . $data['code'] . '</td>';
 
     echo '<td>' . $data['date'] . '</td>';
 

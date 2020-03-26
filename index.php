@@ -1,103 +1,31 @@
-  <!DOCTYPE html>
-
-  <html lang="en">
-
-
-
-  <head>
-
-    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <style>
-    div.block-exit {
-      position: absolute;
-    top: 30%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
-    width: 300px;
-    padding: 20px;
-    background-color: #f0f0f1;
-    }
-
-    div.block-exit h1{
-      font-family:Open Sans,sans-serif;
-      color:#96a2b2;
-      letter-spacing:1px;
-      font-size:22px;
-      margin-bottom:20px;
-      margin-top:20px
-    }
-
-     div.block-exit img.logo {
-      width: 140px;
-      height: 110px;
-      margin-left: 60px;
-     }
-    </style>
-  </head>
-  <body>
-  <?php
-    session_start();
-    if (empty($_SESSION['login']) or empty($_SESSION['id']))
-    {
-
-  ?>
-<div class="block-exit">
-<img src="img/logo.png" class="logo" alt="logo">
-  <h1>Введите свои данные</h1>	
-<form action="proverca.php" method="post">
-<div class="form-group">
-<div class="input-group">
-<span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
-  <input name="login" type="text" class="form-control" placeholder="Ваш логин">
-  </div>
-</div>
-<div class="form-group">
-<div class="input-group">
-<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-  <input name="password" type="password" class="form-control" placeholder="Ваш суперпароль">
-  </div>
-</div>
-  <input type="submit" value="Войти" class="btn btn-primary btn-block"><br/><br/>
-</form>
-<div>Здравствуйте, <font color="red">Гость</font>! <br/>
-Авторизуйтесь и пройдите по ссылке! </div>
-</div> 
-
-
-  <!-- <div class="login-block">
-	<img src="1.png" alt="Scanfcode">
-  <h1>Введите свои данные</h1>	
-<form action="proverca.php" method="post">
-<div class="form-group">
-<div class="input-group">
-<span class="input-group-addon"><i class="fa fa-user ti-user"></i></span>
-  <input name="login" type="text" class="form-control" placeholder="Ваш логин">
-  </div>
-</div>
- 
-<hr class="hr-xs">
- 
-<div class="form-group">
-<div class="input-group">
-<span class="input-group-addon"><i class="fa fa-lock ti-unlock"></i></span>
-  <input name="password" type="password" class="form-control" placeholder="Ваш суперпароль">
-  </div>
-</div>
-  <input type="submit" value="войти" class="btn btn-primary btn-block" >
-</form>
-Здравствуйте <font color="red">гость</font>! <br/>
-Авторизуйтесь и пройдите по ссылке! 
-</div> -->
-
 <?php
+//Редирект
+ //if (empty($_SESSION['login']){
+  
+//} 
+?> 
+ <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>        
+  </head>
+  <body>  
+  <?php
+  session_start();
+  if (empty($_SESSION['login']) or empty($_SESSION['id']))
+    {
+      header('Location: http://a0144913.xsph.ru/stock.php ');
+      include 'registr.php'; 
     }
     else  //Иначе. 
     {      
+      if($_SESSION['id']==1 ||$_SESSION['id']==2){
+        header('Location: http://a0144913.xsph.ru/stock.php ');
+      }
+
       $host = "localhost";
 
       $user = "a0144913_stock";
@@ -115,58 +43,18 @@
           ?>
     <div class="container">
 
-      <div class="row">
-
-        <div class="span12">
-          <h3>Приход товара</h3>
-          <a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a> 
-        </div>
-
-      </div>
 
       <div class="row">
-
-        <div class="span12">
-
-          <ul class="nav nav-pills">
-
-            <ul class="nav nav-pills">
-
-              <li>
-
-                <a href="stock.php">Склад</a>
-
-              </li>
-
-              <li class="active">
-
-                <a href="index.php">Приход</a>
-
-              </li>
-
-              <li>
-
-                <a href="shipped.php">Отгрузка</a>
-
-              </li>
-
-              <li>
-
-                <a href="add_coming.php">Оформить приход</a>
-
-              </li>
-
-              <li>
-
-                <a href="add_shipped.php">Оформить отгрузку</a>
-
-              </li>
-
-            </ul>
-
-        </div>
-
-      </div>
+    <div class="col-sm-8">
+    <h3>Приход товара</h3>
+    </div>
+    <div class="col-sm-4">
+          <label for="user">Пользователь: </label>
+          <span><?php echo($_SESSION['fullname']); ?></span>
+          <p><a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a></p>
+    </div>
+  </div>
+  <?php include 'menu.php'; ?>
 
       <div class="row">
 
@@ -174,7 +62,7 @@
 
           <?php
 
- $qr_result = mysql_query("SELECT name,amount,code,date FROM ".$table." ORDER BY `date` DESC");
+ $qr_result = mysql_query("SELECT name,weight,amount,code,date,user FROM ".$table." ORDER BY `date` DESC");
 
   echo '<table class="table table-hover">';
 
@@ -184,11 +72,15 @@
 
   echo '<th>Название</th>';
 
+  echo '<th>Вес(кг/л)</th>';
+
   echo '<th>Количество</th>';
 
   echo '<th>Код товара</th>';
 
   echo '<th>Дата</th>';
+
+  echo '<th>Кто оприходовал</th>';
 
   echo '</tr>';
 
@@ -202,11 +94,15 @@
 
     echo '<td>' . $data['name'] . '</td>';
 
+    echo '<td>' . $data['weight'] . '</td>';
+
     echo '<td>' . $data['amount'] . '</td>';
 
     echo '<td>' . $data['code'] . '</td>';
 
     echo '<td>' . $data['date'] . '</td>';
+
+    echo '<td>' . $data['user'] . '</td>';
 
     echo '</tr>';
 
@@ -219,7 +115,10 @@
   echo '</table>';
 
 
-    }
+    }   
+
+
+
 ?>
 
         </div>
@@ -229,7 +128,6 @@
     </div>
 
   </body>
-
 
 
   </html>

@@ -93,7 +93,8 @@ $table = "coming";
 
                     success: function(result) {
 
-                        $('.name-tovar').val(result);
+                        $('.name-tovar').val(result.name);
+                        $('.weight-tovar').val(result.weight);
 
                         //$('.name-tovar').attr('disabled','disabled'); Задизейбленый не хочет подставлять
 
@@ -128,106 +129,48 @@ $table = "coming";
         </style>
 
     </head>
-
-
-
     <body>
-
         <div class="container">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h3>Добавить товар</h3>
+                </div>
+                <div class="col-sm-4">
+                    <label for="user">Пользователь: </label>
+                    <span><?php echo($_SESSION['login']); ?></span>
+                    <p>
+                        <a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a>
+                    </p>
+                </div>
+        </div>
+        <?php include 'menu.php'; ?>
+        <?php
+            if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])) {
+            // подключаемся к серверу
+                $link = mysqli_connect($host, $user, $password, $db_name)
+                or die("Ошибка " . mysqli_error($link));
 
-            <h3>Добавить товар</h3>
+            // экранирования символов для mysql
+                $name = htmlentities(mysqli_real_escape_string($link, $_POST['name']));
+                $amount = htmlentities(mysqli_real_escape_string($link, $_POST['amount']));
+                $code = htmlentities(mysqli_real_escape_string($link, $_POST['code']));
+                $today = date("Y-m-d H:i:s");
+                $user = $_SESSION['login'];
+                $weight = htmlentities(mysqli_real_escape_string($link, $_POST['weight']));
 
-            <ul class="nav nav-pills">
+            // создание строки запроса
+                 $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today','$user','$weight')";
 
-                <li>
+            // выполняем запрос
+                $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
 
-                    <a href="stock.php">Склад</a>
+                if($result) { echo "<span class='text-success'>Данные добавлены</span></br><a href='index.php'>Посмотреть документы прихода</a>"; }
 
-                </li>
-
-                <li>
-
-                    <a href="index.php">Приход</a>
-
-                </li>
-
-                <li>
-
-                    <a href="shipped.php">Отгрузка</a>
-
-                </li>
-
-                <li class="active">
-
-                    <a href="add_coming.php">Оформить приход</a>
-
-                </li>
-
-                <li>
-
-                    <a href="add_shipped.php">Оформить отгрузку</a>
-
-                </li>
-
-            </ul>
-
-            <?php
-
- 
-
-if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
-
- 
-
-    // подключаемся к серверу
-
-    $link = mysqli_connect($host, $user, $password, $db_name) 
-
-        or die("Ошибка " . mysqli_error($link)); 
-
-     
-
-    // экранирования символов для mysql
-
-    $name = htmlentities(mysqli_real_escape_string($link, $_POST['name']));
-
-    $amount = htmlentities(mysqli_real_escape_string($link, $_POST['amount']));
-
-    $code = htmlentities(mysqli_real_escape_string($link, $_POST['code']));
-
-    $today = date("Y-m-d H:i:s");
-
-     
-
-    // создание строки запроса
-
-    $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today')";
-
-     
-
-    // выполняем запрос
-
-    $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
-
-    if($result)
-
-    {
-
-        echo "<span class='text-success'>Данные добавлены</span></br><a href='index.php'>Посмотреть документы прихода</a>";
-
-    }
-
-    // закрываем подключение
-
-    mysqli_close($link);
-
-}
-
-?>
-
-
-
-                <?php 
+            // закрываем подключение
+                mysqli_close($link);
+            }
+        ?>
+         <?php
 
 
 
@@ -253,8 +196,6 @@ mysql_select_db($db_name, $conn);
 
 $mysqli = new mysqli("localhost", $user, $password, $db_name);
 
-
-
 /* проверка соединения */
 
 if ($mysqli->connect_errno) {
@@ -265,22 +206,22 @@ if ($mysqli->connect_errno) {
 
 }
 
-
+if($_SESSION['id'] == 1){
+    $numstock=0;
+} else {
+    $numstock=1;
+}
 
 /* Select запросы возвращают результирующий набор */
 
-if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code)) {
-
+if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code." AND num_stock=".$numstock)) {
     if($result->num_rows > 0){
-
        $sum_amount =  (int)$result->fetch_assoc()["amount"] + (int)$amount;
-
-            $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code);
-
+       $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code." AND num_stock=".$numstock);
         } else {
-
-            $mysqli->query("INSERT INTO stock VALUES(NULL, '$name','$amount','$code')");
-
+            $mysqli->query("INSERT INTO `stock` (`id`, `name`, `amount`, `code`, `num_stock`,`weight`) VALUES (NULL, '$name', '$amount', '$code',$numstock,$weight)");//, '$name','$amount','$code' || INSERT INTO `stock` (`id`, `name`, `amount`, `code`, `num_stock`) VALUES (NULL, ".$name.")
+            
+            
     }
 
     /* очищаем результирующий набор */
@@ -332,6 +273,14 @@ $mysqli->close();
                             <div class="col-sm-2" style="padding:5px;"><label>Количество: </label></div>
 
                             <div class="col-sm-4" style="padding:5px;"><input type="text" name="amount" value="0" class="amount-tovar"/></div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-2" style="padding:5px;"><label>Вес товара: </label></div>
+
+                            <div class="col-sm-4" style="padding:5px;"><input type="text" name="weight" class="weight-tovar"/></div>
 
                         </div>
 

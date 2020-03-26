@@ -1,0 +1,13 @@
+{
+    "name": "materik/stock",
+    "description": "inventory accounting",
+    "authors": [
+        {
+            "name": "Vladimir Solowyow",
+            "email": "vovanchik3007@mail.ru"
+        }
+    ],
+    "require": {
+        "phpoffice/phpexcel": "^1.8"
+    }
+}

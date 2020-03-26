@@ -93,9 +93,9 @@ $table = "shipped";
                     data: {code: parseInt(code,10)},           
 
                     success: function(result) {
-
-                        $('.name-tovar').val(result);
-
+                        debugger;
+                        $('.name-tovar').val(result.name);
+                        $('.weight-tovar').val(result.weight);
                         //$('.name-tovar').attr('disabled','disabled'); Задизейбленый не хочет подставлять
 
                         $('.amount-tovar').focus().val('');
@@ -162,11 +162,13 @@ if(isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['code'])){
 
     $today = date("Y-m-d H:i:s");
 
-     
+    $user = $_SESSION['login'];    
+    
+    $weight = htmlentities(mysqli_real_escape_string($link, $_POST['weight']));
 
     // создание строки запроса
 
-    $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today','$who')";
+    $query ="INSERT INTO ".$table." VALUES(NULL, '$name','$amount','$code','$today','$who', '$user','$weight')";
 
      
 
@@ -230,17 +232,21 @@ if ($mysqli->connect_errno) {
 
 }
 
-
+if($_SESSION['id'] == 1){
+    $numstock=0;
+} else {
+    $numstock=1;
+}
 
 /* Select запросы возвращают результирующий набор */
 
-if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code)) {
+if ($result = $mysqli->query("SELECT amount FROM ".$table." WHERE code=".$code." AND num_stock=".$numstock)) {
 
     if($result->num_rows > 0){
 
        $sum_amount =  (int)$result->fetch_assoc()["amount"] - (int)$amount;
 
-            $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code);
+            $mysqli->query("UPDATE stock SET amount=".$sum_amount." WHERE code=".$code." AND num_stock=".$numstock);
 
         } 
 
@@ -262,41 +268,19 @@ $mysqli->close();
 
             <div class="container">
 
-                <h3>Отгрузить товар</h3>
-
-                <ul class="nav nav-pills">
-
-                    <li>
-
-                        <a href="stock.php">Склад</a>
-
-                    </li>
-
-                    <li>
-
-                        <a href="index.php">Приход</a>
-
-                    </li>
-
-                    <li>
-
-                        <a href="shipped.php">Отгрузка</a>
-
-                    </li>
-
-                    <li>
-
-                        <a href="add_coming.php">Оформить приход</a>
-
-                    </li>
-
-                    <li class="active">
-
-                        <a href="add_shipped.php">Оформить отгрузку</a>
-
-                    </li>
-
-                </ul>
+                
+                
+                <div class="row">
+    <div class="col-sm-8">
+    <h3>Отгрузить товар</h3>  
+    </div>
+    <div class="col-sm-4">
+          <label for="user">Пользовватель: </label>
+          <span><?php echo($_SESSION['login']); ?></span>
+          <p><a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a></p>
+    </div>
+  </div>
+  <?php include 'menu.php'; ?>
 
 
 
@@ -339,6 +323,14 @@ $mysqli->close();
                         <div class="col-sm-2" style="padding:5px;"><label>Кому отгружаем: </label></div>
 
                         <div class="col-sm-4" style="padding:5px;"><input type="text" name="who" /></div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-2" style="padding:5px;"><label>Вес товара: </label></div>
+
+                        <div class="col-sm-4" style="padding:5px;"><input type="text" name="weight" class="weight-tovar"/></div>
 
                     </div>
 

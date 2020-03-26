@@ -1,0 +1,39 @@
+div.block-exit {
+    position: absolute;
+  top: 30%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 300px;
+  padding: 20px;
+  background-color: #f0f0f1;
+  }
+
+  div.block-exit h1{
+    font-family:Open Sans,sans-serif;
+    color:#96a2b2;
+    letter-spacing:1px;
+    font-size:22px;
+    margin-bottom:20px;
+    margin-top:20px
+  }
+
+   div.block-exit img.logo {
+    width: 140px;
+    height: 110px;
+    margin-left: 60px;
+   }
+
+   .empty-amount {
+
+    color: red;
+
+    background: #eeeeee;
+
+  }
+
+  .table thead th {
+    position: sticky;
+    top: 0px;
+    background-color: white;
+  }
