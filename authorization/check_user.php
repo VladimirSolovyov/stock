@@ -8,7 +8,9 @@
 
     //заносим введенный пользователем пароль в переменную $password, если он пустой, то уничтожаем переменную
     if (empty($login) or empty($password)) //если пользователь не ввел логин или пароль, то выдаем ошибку и останавливаем скрипт
-    {exit ("<body><div align='center'><br/><br/><br/><h3>Вы ввели не всю информацию, вернитесь назад и заполните все поля!" . "<a href='index.php'> <b>Назад</b> </a></h3></div></body>");}
+    {
+        require_once 'template/msg_not_all_text.php';
+    }
 
     //если логин и пароль введены,то обрабатываем их, чтобы теги и скрипты не работали, мало ли что люди могут ввести
     $login = stripslashes($login);
@@ -18,46 +20,42 @@
 
     //удаляем лишние пробелы
     $login = trim($login);
-    $password = trim($password);
+    $passwordCurrent = trim($password);
 	
      //Подключаемся к базе данных.
-     $host = "localhost";
-     $user = "a0144913_stock";
-     $passwordConect = "stock";
-     $db_name = "a0144913_stock";
+     require_once '../connection.php';
      $table = "coming";
-     $dbcon = mysql_connect($host, $user, $passwordConect); 
-     mysql_select_db($db_name, $dbcon);
+     $conn = mysql_connect($host, $user, $password);
+     mysql_select_db($db_name, $conn);
 
-	if (!$dbcon) {
+	if (!$conn) {
         echo "<p>Произошла ошибка при подсоединении к MySQL!</p>".mysql_error(); exit();
     } else {
-    if (!mysql_select_db($db_name, $dbcon)) {
+    if (!mysql_select_db($db_name, $conn)) {
         echo("<p>Выбранной базы данных не существует!</p>");
         }
 	}
-    echo $login;
 
     //извлекаем из базы все данные о пользователе с введенным логином
-    $result = mysql_query("SELECT * FROM signup WHERE username='$login'", $dbcon);
+    $result = mysql_query("SELECT * FROM signup WHERE username='$login'", $conn);
     $myrow = mysql_fetch_array($result);
 
     if (empty($myrow["password"])) {
         //если пользователя с введенным логином не существует
-        exit ("<body><div align='center'><br/><br/><br/><h3>Извините, введённый вами login или пароль неверный." . "<a href='index.php'> <b>Назад</b> </a></h3></div></body>");
+        require_once 'template/msg_fail.php';
     }
     else {
         //если существует, то сверяем пароли
-        if ($myrow["password"]==$password) {
+        if ($myrow["password"] == $passwordCurrent) {
         //если пароли совпадают, то запускаем пользователю сессию! Можете его поздравить, он вошел!
         $_SESSION['login']=$myrow["username"];
         $_SESSION['id']=$myrow["user_id"];//эти данные очень часто используются, вот их и будет "носить с собой" вошедший пользователь
         $_SESSION['fullname']=$myrow["fullname"];//Возможно это глупо, но пока так - для отображения пользователя
-        header("Location:index.php");
+        header("Location:../index.php");
         }
         else {
         //если пароли не сошлись
-        exit ("<body><div align='center'><br/><br/><br/><h3>Извините, введённый вами login или пароль неверный." . "<a href='index.php'> <b>Назад</b> </a></h3></div></body>");
+        require_once 'template/msg_fail.php';
         }
     }
 ?>

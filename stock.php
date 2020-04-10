@@ -64,7 +64,7 @@ error: function(result) {
 session_start();
 if (empty($_SESSION['login']) or empty($_SESSION['id']))
 {
-  include 'registr.php'; 
+  include 'authorization/registr.php';
 } else {
 $host = "localhost";
 $user = "a0144913_stock";

@@ -1,7 +1,7 @@
 <div class="block-exit">
-<img src="img/logo.png" class="logo" alt="logo">
+<img src="../img/logo.png" class="logo" alt="logo">
   <h1>Введите свои данные</h1>	
-    <form action="proverca.php" method="post">
+    <form action="authorization/check_user.php" method="post">
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon">

@@ -37,3 +37,7 @@ div.block-exit {
     top: 0px;
     background-color: white;
   }
+
+  a {
+      text-decoration: none;
+  }
