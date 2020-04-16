@@ -276,7 +276,7 @@ $mysqli->close();
     </div>
     <div class="col-sm-4">
           <label for="user">Пользовватель: </label>
-          <span><?php echo($_SESSION['login']); ?></span>
+          <span><?php echo($_SESSION['fullname']); ?></span>
           <p><a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a></p>
     </div>
   </div>

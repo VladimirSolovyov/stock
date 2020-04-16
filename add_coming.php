@@ -137,7 +137,7 @@ $table = "coming";
                 </div>
                 <div class="col-sm-4">
                     <label for="user">Пользователь: </label>
-                    <span><?php echo($_SESSION['login']); ?></span>
+                    <span><?php echo($_SESSION['fullname']); ?></span>
                     <p>
                         <a href='viiti.php' class="btn btn-danger" style="float: right;">Выйти</a>
                     </p>

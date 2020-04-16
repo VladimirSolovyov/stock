@@ -3,18 +3,18 @@ echo "<script>console.log(".$_SESSION['id'] .")</script>";
 if($_SESSION['id'] == 1) {
 ?>
 
-<!-- for igor -->
+<!-- for igor(Александр) -->
 
 <ul class="nav nav-pills main-menu">
     <li>
         <a href="stock.php">Склад</a>
     </li>
-    <!-- <li>
+    <!--<li>
         <a href="index.php">Приход</a>
-    </li>
+    </li>-->
     <li>
         <a href="shipped.php">Отгрузка</a>
-    </li> -->
+    </li>
     <li>
         <a href="add_coming.php">Оформить приход</a>
     </li>
@@ -32,12 +32,12 @@ if($_SESSION['id'] == 1) {
     <li>
         <a href="stock.php">Склад</a>
     </li>
-    <!-- <li>
+    <!--<li>
         <a href="index.php">Приход</a>
-    </li>
+    </li>-->
     <li>
         <a href="shipped.php">Отгрузка</a>
-    </li> -->
+    </li>
     <li>
         <a href="add_coming.php">Оформить приход</a>
     </li>

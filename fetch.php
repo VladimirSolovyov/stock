@@ -2,13 +2,9 @@
 
  if(isset($_POST["from_date"], $_POST["to_date"]))
  {
-     $host = "localhost";
-     $user = "a0144913_stock";
-     $password = "stock";
-     $db_name = "a0144913_stock";
+     require_once 'connection.php';
      $connect = mysqli_connect($host,$user,$password,$db_name);
      $output = '';
-     
      $query = "
          SELECT * FROM shipped
          WHERE date BETWEEN '".$_POST["from_date"]."' AND '".$_POST["to_date"]."'
@@ -20,8 +16,22 @@
          $query .= "
              AND user='".$_POST["user_date"]."'
          ";
-      } 
-     
+      }
+
+      if(!empty($_POST["name_product"]))
+        {
+           $query .= "
+               AND name='".$_POST["name_product"]."'
+           ";
+        }
+
+      if(!empty($_POST["id_who"]))
+        {
+           $query .= "
+               AND who_shipped='".$_POST["id_who"]."'
+           ";
+        }
+
      $result = mysqli_query($connect, $query);
      
      $output .="

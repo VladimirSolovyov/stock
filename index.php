@@ -42,7 +42,7 @@
       <div class="row">
         <div class="span12">
           <?php
-            $qr_result = mysql_query("SELECT name,weight,amount,code,date,user FROM ".$table." ORDER BY `date` DESC");
+            $qr_result = mysql_query("SELECT name,weight,amount,code,date,user FROM ".$table." WHERE  `date` > DATE_ADD(NOW(), INTERVAL -30 DAY) ORDER BY `date` DESC");
             echo '<table class="table table-hover">
                     <thead>
                         <tr>
